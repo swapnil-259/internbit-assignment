@@ -1,4 +1,4 @@
-from apps.core.models import BaseModel
+from pydantic import BaseModel
 
 
 class ProductDataType(BaseModel):
