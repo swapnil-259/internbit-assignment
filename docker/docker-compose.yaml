@@ -1,0 +1,39 @@
+services:
+  internbit_postgres:
+    image: postgres
+    container_name: internbitsql
+    restart: always
+    ports:
+      - 5438:5432
+    env_file:
+      - ../env/postgresql.env
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  internbit_pgadmin:
+    container_name: internbitpgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    env_file:
+      - ../env/pgadmin.env
+    ports:
+      - 98:80
+    depends_on:
+      - internbit_postgres
+    volumes:
+      - ./pgadmin_data:/var/lib/pgadmin/storage/
+
+  internbit_django:
+    build:
+      context: .
+    ports:
+      - 8800:8000
+    volumes:
+      - ../:/internbit_assignment
+    restart: always
+    container_name: internbitdjango
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+volumes:
+  pgadmin_data:
+  postgres_data:
